@@ -25,12 +25,7 @@ class BindingsRecorder: SupportSQLiteProgram {
         val result = arrayOfNulls<String>(bindings.size())
         for (i in 0 until bindings.size()) {
             val key = bindings.keyAt(i)
-            val binding = bindings[key]
-            if (binding != null) {
-                result[i] = bindings[key].toString()
-            } /*else {
-                result[i] = ""
-            }*/
+            result[i] = bindings[key]?.toString()
         }
         return result
     }
