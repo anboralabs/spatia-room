@@ -3,7 +3,7 @@ package co.anbora.labs.spatia.db
 import android.util.SparseArray
 import androidx.sqlite.db.SupportSQLiteProgram
 
-class BindingsRecorder: SupportSQLiteProgram {
+class SQLiteBinding: SupportSQLiteProgram {
 
     private val bindings = SparseArray<Any>()
 

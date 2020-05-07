@@ -101,13 +101,13 @@ class Database(
         cancellationSignal: CancellationSignal?
     ): Cursor {
 
-        val hack = BindingsRecorder()
-        supportQuery?.bindTo(hack)
+        val binding = SQLiteBinding()
+        supportQuery?.bindTo(binding)
 
         return database.rawQueryWithFactory({ _, masterQuery, editTable, query ->
             supportQuery?.bindTo(Program(query))
             SQLiteCursor(masterQuery, editTable, query)
-        }, supportQuery?.sql, hack.getBindings(), null)
+        }, supportQuery?.sql, binding.getBindings(), null)
     }
 
     override fun insert(
