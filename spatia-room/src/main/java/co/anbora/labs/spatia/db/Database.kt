@@ -104,7 +104,8 @@ class Database(
         val hack = BindingsRecorder()
         supportQuery?.bindTo(hack)
 
-        return database.rawQueryWithFactory({ _, masterQuery, editTable, query -> supportQuery?.bindTo(Program(query))
+        return database.rawQueryWithFactory({ _, masterQuery, editTable, query ->
+            supportQuery?.bindTo(Program(query))
             SQLiteCursor(masterQuery, editTable, query)
         }, supportQuery?.sql, hack.getBindings(), null)
     }
