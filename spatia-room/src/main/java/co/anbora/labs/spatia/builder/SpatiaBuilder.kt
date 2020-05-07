@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteOpenHelper
+import co.anbora.labs.spatia.db.SpatiaHelperFactory
 import java.util.concurrent.Executor
 
 class SpatiaBuilder<T : RoomDatabase?> (
@@ -18,6 +19,7 @@ class SpatiaBuilder<T : RoomDatabase?> (
         klass,
         name
     ).createFromAsset("spatia_db_template.sqlite")
+        .openHelperFactory(SpatiaHelperFactory())
 
     override fun openHelperFactory(factory: SupportSQLiteOpenHelper.Factory?): SpatiaRoom.Builder<T> {
         roomBuilder.openHelperFactory(factory)
