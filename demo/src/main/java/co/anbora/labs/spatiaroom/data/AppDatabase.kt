@@ -2,11 +2,8 @@ package co.anbora.labs.spatiaroom.data
 
 import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
-import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 import co.anbora.labs.spatia.builder.SpatiaRoom
-import co.anbora.labs.spatia.db.SpatiaHelperFactory
 import co.anbora.labs.spatiaroom.data.dao.PostsDao
 import co.anbora.labs.spatiaroom.data.model.Post
 
