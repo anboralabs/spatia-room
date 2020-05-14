@@ -1,3 +1,5 @@
+[![Release](https://jitpack.io/v/anboralabs/spatia-room.svg)](https://jitpack.io/#anboralabs/spatia-room)
+
 ![Spatia Logo](/resources/logo.png)
 
 # Spatia-Room
@@ -11,6 +13,24 @@ Stapia-Room is a bridge between Room Android Database and Spatialite.
 - Add Spatia-room dependency
 - Creates database using SpatiaRoom Builder
 - Creates Dao with Geo Queries
+
+### Adding Spatia-Room dependency
+
+- Add Jitpack Repository
+```gradle
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+- Add dependency
+```gradle
+dependencies {
+        implementation 'com.github.anboralabs:spatia-room:0.1.0'
+}
+```
 
 ### Creating the database
 
