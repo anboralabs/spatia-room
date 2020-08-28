@@ -34,7 +34,7 @@ dependencies {
 
 ### Creating the database
 
-```java
+```kotlin
 val instance = SpatiaRoom.databaseBuilder(
                             context.applicationContext,
                             AppDatabase::class.java,
@@ -46,7 +46,7 @@ val instance = SpatiaRoom.databaseBuilder(
 
 - Mark each geo-spatial queries with `@SkipQueryVerification`
 
-```java
+```kotlin
 import androidx.room.*
 import co.anbora.labs.spatiaroom.data.model.Post
 import kotlinx.coroutines.flow.Flow
