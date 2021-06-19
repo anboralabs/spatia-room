@@ -5,6 +5,7 @@
 # Spatia-Room
 
 ## What is it?
+
 Stapia-Room is a bridge between Room Android Database and Spatialite.
 
 ## How to use it?
@@ -17,6 +18,7 @@ Stapia-Room is a bridge between Room Android Database and Spatialite.
 ### Adding Spatia-Room dependency
 
 - Add Jitpack Repository
+
 ```gradle
 allprojects {
     repositories {
@@ -25,10 +27,12 @@ allprojects {
     }
 }
 ```
+
 - Add dependency
+
 ```gradle
 dependencies {
-        implementation 'com.github.anboralabs:spatia-room:0.1.0'
+        implementation 'com.github.anboralabs:spatia-room:0.1.1'
 }
 ```
 
@@ -40,6 +44,19 @@ val instance = SpatiaRoom.databaseBuilder(
                             AppDatabase::class.java,
                             DB_NAME
                         ).build()
+```
+
+### Creating the database from custom spatialite db
+
+The db template must be a spatialite db, if you want to use geo functions.
+
+```kotlin
+val instance = SpatiaRoom.databaseBuilder(
+                            context.applicationContext,
+                            AppDatabase::class.java,
+                            DB_NAME
+                        ).createFromAsset("my_template.db")
+                            .build()
 ```
 
 ### Creating Dao
@@ -70,10 +87,10 @@ interface PostsDao {
     fun getGeosVersion(): String
 
     @Query("""
-        SELECT ASText( 
+        SELECT ASText(
             MakePolygon(
-                GeomFromText('LINESTRING(0 0, 100 0, 100 100, 0 100, 0 0)') 
-            ) 
+                GeomFromText('LINESTRING(0 0, 100 0, 100 100, 0 100, 0 0)')
+            )
         ) as line
     """)
     @SkipQueryVerification
@@ -103,30 +120,41 @@ interface PostsDao {
 ```
 
 ## Example Code
+
 There is a very simple and useless example in the `demo` module.
 
 ## Other FAQ
 
-### What is *Spatialite*?
-Simply: *Spatialite* = *SQLite* + advanced geospatial support.<br>
-*Spatialite* is a geospatial extension to *SQLite*. It is a set of few libraries written in C to extend *SQLite* with geometry data types and many [SQL functions](http://www.gaia-gis.it/gaia-sins/spatialite-sql-4.3.0.html) above geometry data. For more info: https://www.gaia-gis.it/gaia-sins/
+### What is _Spatialite_?
+
+Simply: _Spatialite_ = _SQLite_ + advanced geospatial support.<br> _Spatialite_
+is a geospatial extension to _SQLite_. It is a set of few libraries written in C
+to extend _SQLite_ with geometry data types and many
+[SQL functions](http://www.gaia-gis.it/gaia-sins/spatialite-sql-4.3.0.html)
+above geometry data. For more info: https://www.gaia-gis.it/gaia-sins/
 
 ### Is there a list of all supported Spatialite functions?
+
 Yes - http://www.gaia-gis.it/gaia-sins/spatialite-sql-4.4.0.html
 
 ### Does it use JDBC?
-No. It uses cursors - the suggested lightweight approach to access SQL used in the Android platform instead of the heavier JDBC.
+
+No. It uses cursors - the suggested lightweight approach to access SQL used in
+the Android platform instead of the heavier JDBC.
 
 ### 64-bit architectures supported?
 
 Yes. It builds for `arm64-v8a` and `x86_64`. `mips64` is not tested.
 
 ## Credits
+
 The main ideas used here were borrowed from:
+
 - https://github.com/sevar83/android-spatialite
 - https://github.com/commonsguy/cwac-saferoom
 
 ## License
+
 ```
 MIT License
 

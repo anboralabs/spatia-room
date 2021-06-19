@@ -35,6 +35,29 @@ object SpatiaRoom {
     interface Builder<T : RoomDatabase?> {
 
         /**
+         * Configures Room to create and open the database using a pre-packaged database located in
+         * the application 'assets/' folder.
+         * <p>
+         * Room does not open the pre-packaged database, instead it copies it into the internal
+         * app database folder and then opens it. The pre-packaged database file must be located in
+         * the "assets/" folder of your application. For example, the path for a file located in
+         * "assets/databases/products.db" would be "databases/products.db".
+         * <p>
+         * The pre-packaged database schema will be validated. It might be best to create your
+         * pre-packaged database schema utilizing the exported schema files generated when
+         * {@link Database#exportSchema()} is enabled.
+         * <p>
+         * This method is not supported for an in memory database {@link Builder}.
+         *
+         * @param databaseFilePath The file path within the 'assets/' directory of where the
+         *                         database file is located.
+         *
+         * @return This {@link Builder} instance.
+         */
+        @Deprecated(message = "This API is experimental. It may be changed in the future without notice.", level = DeprecationLevel.WARNING)
+        fun createFromAsset(databaseFilePath: String): Builder<T>
+
+        /**
          * Sets the database factory. If not set, it defaults to
          * [FrameworkSQLiteOpenHelperFactory].
          *
