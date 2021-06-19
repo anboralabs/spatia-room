@@ -14,12 +14,19 @@ class SpatiaBuilder<T : RoomDatabase?> (
     name: String
 ): SpatiaRoom.Builder<T> {
 
+    private val templateDb = "spatia_db_template.sqlite"
+
     private val roomBuilder = Room.databaseBuilder(
         context.applicationContext,
         klass,
         name
-    ).createFromAsset("spatia_db_template.sqlite")
+    ).createFromAsset(templateDb)
         .openHelperFactory(SpatiaHelperFactory())
+
+    override fun createFromAsset(databaseFilePath: String): SpatiaRoom.Builder<T> {
+        roomBuilder.createFromAsset(databaseFilePath)
+        return this
+    }
 
     override fun openHelperFactory(factory: SupportSQLiteOpenHelper.Factory?): SpatiaRoom.Builder<T> {
         roomBuilder.openHelperFactory(factory)

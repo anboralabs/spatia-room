@@ -28,7 +28,7 @@ allprojects {
 - Add dependency
 ```gradle
 dependencies {
-        implementation 'com.github.anboralabs:spatia-room:0.1.0'
+        implementation 'com.github.anboralabs:spatia-room:0.1.1'
 }
 ```
 
@@ -40,6 +40,19 @@ val instance = SpatiaRoom.databaseBuilder(
                             AppDatabase::class.java,
                             DB_NAME
                         ).build()
+```
+
+### Creating the database from custom spatialite db
+
+The db template must be a spatialite db, if you want to use geo functions.
+
+```kotlin
+val instance = SpatiaRoom.databaseBuilder(
+                            context.applicationContext,
+                            AppDatabase::class.java,
+                            DB_NAME
+                        ).createFromAsset("my_template.db")
+                            .build()
 ```
 
 ### Creating Dao
