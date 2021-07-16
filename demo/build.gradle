@@ -48,6 +48,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
     implementation "androidx.room:room-ktx:2.2.5"
+    implementation 'org.locationtech.jts:jts-core:1.17.1'
     api "androidx.room:room-runtime:2.2.5"
     kapt "androidx.room:room-compiler:2.2.5"
     implementation project(':spatia-room')

@@ -42,6 +42,8 @@ class FirstFragment : Fragment() {
 
             appDatabase.getPostsDao().insertPosts(listPost)
 
+            val list = appDatabase.getPostsDao().getPolygon()
+
             val spatiaVersion = appDatabase.getPostsDao().getSpatiaVersion()
             val proj4Version = appDatabase.getPostsDao().getProj4Version()
             val geosVersion = appDatabase.getPostsDao().getGeosVersion()

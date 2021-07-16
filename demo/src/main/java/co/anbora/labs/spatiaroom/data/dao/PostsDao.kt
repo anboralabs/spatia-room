@@ -25,6 +25,7 @@
 package co.anbora.labs.spatiaroom.data.dao
 
 import androidx.room.*
+import co.anbora.labs.spatiaroom.data.model.PolygonRecord
 import co.anbora.labs.spatiaroom.data.model.Post
 import kotlinx.coroutines.flow.Flow
 
@@ -114,4 +115,13 @@ interface PostsDao {
      */
     @Query("SELECT * FROM ${Post.TABLE_NAME}")
     fun getAllPostsList(): List<Post>
+
+    /**
+     * Retrieves a single report from the database
+     */
+    @Query("""SELECT h.id, h.nazev, h.kod,
+            AsText(h.geom) AS geom
+        FROM honitby h""")
+    @SkipQueryVerification
+    fun getPolygon(): List<PolygonRecord>
 }
