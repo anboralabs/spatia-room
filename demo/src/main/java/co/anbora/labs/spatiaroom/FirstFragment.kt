@@ -1,17 +1,14 @@
 package co.anbora.labs.spatiaroom
 
-import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import co.anbora.labs.spatiaroom.data.AppDatabase
 import co.anbora.labs.spatiaroom.data.model.Post
 import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.coroutines.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -19,6 +16,9 @@ import kotlinx.android.synthetic.main.fragment_first.*
 class FirstFragment : Fragment() {
 
     private lateinit var appDatabase: AppDatabase
+
+    val job = Job()
+    val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +33,7 @@ class FirstFragment : Fragment() {
 
         appDatabase = AppDatabase.getInstance(requireContext())
 
-        AsyncTask.execute(Runnable {
-
+        uiScope.launch(Dispatchers.IO) {
             val post1 = Post(1, "prueba", "darwin", "spatia", "test.img")
             val post2 = Post(2, "prueba2", null, "spatia2", "test2.img")
 
@@ -49,12 +48,18 @@ class FirstFragment : Fragment() {
             val distance = appDatabase.getPostsDao().getDistance()
             val post = appDatabase.getPostsDao().getAllPostsList()
 
-            spatia_version.text = spatiaVersion
-            proj4_version.text = proj4Version
-            geos_version.text = geosVersion
-            polyline_txt.text = makePoliline
-            distance_txt.text = distance.toString()
+            withContext(Dispatchers.Main) {
+                spatia_version.text = spatiaVersion
+                proj4_version.text = proj4Version
+                geos_version.text = geosVersion
+                polyline_txt.text = makePoliline
+                distance_txt.text = distance.toString()
+            }
+        }
+    }
 
-        })
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
     }
 }
