@@ -6,19 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import co.anbora.labs.spatiaroom.data.AppDatabase
+import co.anbora.labs.spatiaroom.data.dao.ContractDao
+import co.anbora.labs.spatiaroom.data.dao.PostsDao
+import co.anbora.labs.spatiaroom.data.model.Contract
 import co.anbora.labs.spatiaroom.data.model.Post
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_first.*
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+@AndroidEntryPoint
 class FirstFragment : Fragment() {
 
-    private lateinit var appDatabase: AppDatabase
+    @Inject
+    lateinit var job: Job
 
-    val job = Job()
-    val uiScope = CoroutineScope(Dispatchers.Main + job)
+    @Inject
+    lateinit var uiScope: CoroutineScope
+
+    @Inject
+    lateinit var postDao: PostsDao
+
+    @Inject
+    lateinit var contractDao: ContractDao
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -31,22 +44,27 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        appDatabase = AppDatabase.getInstance(requireContext())
-
         uiScope.launch(Dispatchers.IO) {
             val post1 = Post(1, "prueba", "darwin", "spatia", "test.img")
             val post2 = Post(2, "prueba2", null, "spatia2", "test2.img")
 
+            val contract = Contract(name = "Contract", id = 1, machine_id = 2)
+            val contract2 = Contract(name = "Contract 2", id = 2, machine_id = 3)
+
             val listPost = listOf(post1, post2)
 
-            appDatabase.getPostsDao().insertPosts(listPost)
+            postDao.insertPosts(listPost)
+            contractDao.insert(contract)
+            contractDao.insert(contract2)
 
-            val spatiaVersion = appDatabase.getPostsDao().getSpatiaVersion()
-            val proj4Version = appDatabase.getPostsDao().getProj4Version()
-            val geosVersion = appDatabase.getPostsDao().getGeosVersion()
-            val makePoliline = appDatabase.getPostsDao().getMakePolyline()
-            val distance = appDatabase.getPostsDao().getDistance()
-            val post = appDatabase.getPostsDao().getAllPostsList()
+            val contracts = contractDao.allContracts().blockingGet()
+
+            val spatiaVersion = postDao.getSpatiaVersion()
+            val proj4Version = postDao.getProj4Version()
+            val geosVersion = postDao.getGeosVersion()
+            val makePoliline = postDao.getMakePolyline()
+            val distance = postDao.getDistance()
+            val post = postDao.getAllPostsList()
 
             withContext(Dispatchers.Main) {
                 spatia_version.text = spatiaVersion

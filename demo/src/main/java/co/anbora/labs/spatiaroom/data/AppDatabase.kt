@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import co.anbora.labs.spatia.builder.SpatiaRoom
+import co.anbora.labs.spatiaroom.data.dao.ContractDao
 import co.anbora.labs.spatiaroom.data.dao.PostsDao
+import co.anbora.labs.spatiaroom.data.model.Contract
 import co.anbora.labs.spatiaroom.data.model.Post
 
 @Database(
-    entities = [Post::class],
+    entities = [Post::class, Contract::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -18,29 +20,6 @@ abstract class AppDatabase : RoomDatabase() {
      */
     abstract fun getPostsDao(): PostsDao
 
-    companion object {
-        const val DB_NAME = "geo_database"
+    abstract fun contractDao(): ContractDao
 
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
-
-        fun getInstance(context: Context): AppDatabase {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
-
-            synchronized(this) {
-                val instance = SpatiaRoom.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    DB_NAME
-                ).build()
-
-                INSTANCE = instance
-                return instance
-            }
-        }
-
-    }
 }
