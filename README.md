@@ -38,6 +38,13 @@ dependencies {
 }
 ```
 
+### Compatibility
+
+Please check which android room version are you using and select the perfect fit for you with SpatiaRoom.
+
+- Android Room >= 2.3.0 **use** SpatiaRoom 0.1.2
+- Android Room < 2.3.0 **use** SpatiaRoom 0.1.1
+
 ### Creating the database
 
 ```kotlin

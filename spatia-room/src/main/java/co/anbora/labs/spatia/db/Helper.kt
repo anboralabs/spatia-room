@@ -17,11 +17,7 @@ class Helper(
     private fun createDelegate(
         callback: SupportSQLiteOpenHelper.Callback
     ): OpenHelper {
-        val dbRef = arrayOfNulls<Database>(1)
-        return OpenHelper(
-            dbRef,
-            callback
-        )
+        return OpenHelper(callback)
     }
 
     override fun getDatabaseName(): String = delegate.databaseName
@@ -41,12 +37,12 @@ class Helper(
     override fun setWriteAheadLoggingEnabled(enabled: Boolean) = delegate.setWriteAheadLoggingEnabled(enabled)
 
     inner class OpenHelper(
-        private val dbRef: Array<Database?>,
         @Volatile private var callback: SupportSQLiteOpenHelper.Callback
     ): SQLiteOpenHelper(context, dbName, null, callback.version) {
 
         @Volatile
         private var migrated = false
+        private var wrappedDb: SupportSQLiteDatabase? = null
 
         @Synchronized
         fun getWritableSupportDatabase(): SupportSQLiteDatabase? {
@@ -60,13 +56,11 @@ class Helper(
         }
 
         @Synchronized
-        fun getWrappedDb(db: SQLiteDatabase?): Database? {
-            var wrappedDb: Database? = dbRef[0]
+        fun getWrappedDb(db: SQLiteDatabase?): SupportSQLiteDatabase {
             if (wrappedDb == null) {
                 wrappedDb = Database(db!!)
-                dbRef[0] = wrappedDb
             }
-            return dbRef[0]
+            return wrappedDb as SupportSQLiteDatabase
         }
 
         override fun onCreate(db: SQLiteDatabase?) {
@@ -96,7 +90,7 @@ class Helper(
 
         override fun close() {
             super.close()
-            dbRef[0] = null
+            wrappedDb = null
         }
     }
 
