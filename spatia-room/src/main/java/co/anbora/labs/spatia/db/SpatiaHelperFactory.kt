@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 
 class SpatiaHelperFactory: SupportSQLiteOpenHelper.Factory {
-    override fun create(configuration: SupportSQLiteOpenHelper.Configuration): SupportSQLiteOpenHelper? {
+    override fun create(configuration: SupportSQLiteOpenHelper.Configuration): SupportSQLiteOpenHelper {
         require(configuration.name != null) {
             "Name database null"
         }
@@ -14,7 +14,7 @@ class SpatiaHelperFactory: SupportSQLiteOpenHelper.Factory {
     private fun create(
         context: Context, name: String,
         callback: SupportSQLiteOpenHelper.Callback
-    ): SupportSQLiteOpenHelper? {
+    ): SupportSQLiteOpenHelper {
         return Helper(context, name, callback)
     }
 }
