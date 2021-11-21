@@ -38,7 +38,7 @@ Please check which android room version are you using and select the perfect fit
 
 ```gradle
 dependencies {
-        implementation 'com.github.anboralabs:spatia-room:0.2.0'
+        implementation 'com.github.anboralabs:spatia-room:0.2.3'
 }
 ```
 
