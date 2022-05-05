@@ -1,9 +1,13 @@
 package co.anbora.labs.spatiaroom.data
 
 import android.content.Context
+import android.telecom.Call
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import androidx.sqlite.db.SupportSQLiteDatabase
 import co.anbora.labs.spatia.builder.SpatiaRoom
+import co.anbora.labs.spatia.geometry.GeometryConverters
 import co.anbora.labs.spatiaroom.data.dao.PostsDao
 import co.anbora.labs.spatiaroom.data.model.Post
 
@@ -11,6 +15,7 @@ import co.anbora.labs.spatiaroom.data.model.Post
     entities = [Post::class],
     version = 1
 )
+@TypeConverters(GeometryConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     /**
@@ -35,7 +40,19 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     DB_NAME
-                ).build()
+                ).addCallback(object : Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        // Initialize Spatialite
+                        db.query("SELECT InitSpatialMetaData();").moveToNext()
+                        // Room already creates a BLOB column for the geometry, so we need to use
+                        // RecoverGeometryColumn to correctly initialize Spatialite's metadata
+                        db.query("SELECT RecoverGeometryColumn('geo_posts', 'location', 4326, 'POINT', 'XY');")
+                            .moveToNext()
+                        // create a spatial index (optional)
+                        db.query("SELECT CreateSpatialIndex('geo_posts', 'location');")
+                            .moveToNext()
+                    }
+                }).build()
 
                 INSTANCE = instance
                 return instance
