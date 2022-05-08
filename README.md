@@ -37,10 +37,10 @@ Please check which android room version are you using and select the perfect fit
 
 - Which version use?
 
-| Room         | SpatiaRoom     |
-|--------------|----------------|
-| 2.3.0        | 0.2.3          |
-| >= 2.4.2     | 0.2.4          |
+| Room     | SpatiaRoom |
+| -------- | ---------- |
+| 2.3.0    | 0.2.3      |
+| >= 2.4.2 | 0.2.4      |
 
 ```gradle
 dependencies {
