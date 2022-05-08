@@ -16,6 +16,7 @@ Stapia-Room is a bridge between Room Android Database and Spatialite.
 - Add Spatia-room dependency
 - Creates database using SpatiaRoom Builder
 - Creates Dao with Geo Queries
+- Create Geometry columns in your model and use GeometryConverters to map them to Kotlin objects
 
 ### Adding Spatia-Room dependency
 

@@ -26,6 +26,7 @@ package co.anbora.labs.spatiaroom.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import co.anbora.labs.spatia.geometry.Point
 import co.anbora.labs.spatiaroom.data.model.Post.Companion.TABLE_NAME
 
 /**
@@ -39,7 +40,8 @@ data class Post(
     var title: String? = null,
     var author: String? = null,
     var body: String? = null,
-    var imageUrl: String? = null
+    var imageUrl: String? = null,
+    var location: Point? = null
 ) {
     companion object {
         const val TABLE_NAME = "geo_posts"

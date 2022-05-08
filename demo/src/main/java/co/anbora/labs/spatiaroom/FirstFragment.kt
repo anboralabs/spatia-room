@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import co.anbora.labs.spatia.geometry.Point
 import co.anbora.labs.spatiaroom.data.AppDatabase
 import co.anbora.labs.spatiaroom.data.model.Post
 import kotlinx.android.synthetic.main.fragment_first.*
@@ -34,8 +35,8 @@ class FirstFragment : Fragment() {
         appDatabase = AppDatabase.getInstance(requireContext())
 
         uiScope.launch(Dispatchers.IO) {
-            val post1 = Post(1, "prueba", "darwin", "spatia", "test.img")
-            val post2 = Post(2, "prueba2", null, "spatia2", "test2.img")
+            val post1 = Post(1, "prueba", "darwin", "spatia", "test.img", Point(0.0, 0.0))
+            val post2 = Post(2, "prueba2", null, "spatia2", "test2.img", Point(-122.084801, 37.422131))
 
             val listPost = listOf(post1, post2)
 
