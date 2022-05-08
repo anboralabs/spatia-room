@@ -48,6 +48,7 @@ class FirstFragment : Fragment() {
             val makePoliline = appDatabase.getPostsDao().getMakePolyline()
             val distance = appDatabase.getPostsDao().getDistance()
             val post = appDatabase.getPostsDao().getAllPostsList()
+            println("Posts: $post")
 
             withContext(Dispatchers.Main) {
                 spatia_version.text = spatiaVersion
