@@ -35,11 +35,16 @@ allprojects {
 
 Please check which android room version are you using and select the perfect fit for you with SpatiaRoom.
 
-- Android Room >= 2.3.0
+- Which version use?
+
+| Room         | SpatiaRoom     |
+|--------------|----------------|
+| 2.3.0        | 0.2.3          |
+| >= 2.4.2     | 0.2.4          |
 
 ```gradle
 dependencies {
-        implementation 'com.github.anboralabs:spatia-room:0.2.3'
+        implementation 'com.github.anboralabs:spatia-room:0.2.4'
 }
 ```
 

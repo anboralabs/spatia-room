@@ -60,7 +60,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.anboralabs'
                 artifactId = 'spatia-room'
-                version = '0.2.3'
+                version = '0.2.4'
             }
         }
     }
