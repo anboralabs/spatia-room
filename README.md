@@ -8,7 +8,7 @@
 
 ## What is it?
 
-Stapia-Room is a bridge between Room Android Database and Spatialite.
+Spatia-Room is a bridge between Room Android Database and Spatialite.
 
 ## How to use it?
 
