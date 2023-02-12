@@ -6,10 +6,7 @@ import android.database.sqlite.SQLiteTransactionListener
 import android.os.CancellationSignal
 import android.text.TextUtils
 import android.util.Pair
-import androidx.sqlite.db.SimpleSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteDatabase
-import androidx.sqlite.db.SupportSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteStatement
+import androidx.sqlite.db.*
 import org.spatialite.database.SQLiteCursor
 import org.spatialite.database.SQLiteDatabase
 import java.util.*
@@ -26,16 +23,16 @@ class Database(
     private val database: SQLiteDatabase
 ): SupportSQLiteDatabase {
 
-    override fun compileStatement(sql: String?): SupportSQLiteStatement = Statement(database.compileStatement(sql))
+    override fun compileStatement(sql: String): SupportSQLiteStatement = Statement(database.compileStatement(sql))
 
     override fun beginTransaction() = database.beginTransaction()
 
     override fun beginTransactionNonExclusive() = database.beginTransactionNonExclusive()
 
-    override fun beginTransactionWithListener(transactionListener: SQLiteTransactionListener?)
+    override fun beginTransactionWithListener(transactionListener: SQLiteTransactionListener)
             = database.beginTransactionWithListener(transactionListener)
 
-    override fun beginTransactionWithListenerNonExclusive(transactionListener: SQLiteTransactionListener?)
+    override fun beginTransactionWithListenerNonExclusive(transactionListener: SQLiteTransactionListener)
             = database.beginTransactionWithListenerNonExclusive(transactionListener)
 
     override fun endTransaction() = database.endTransaction()
@@ -50,13 +47,13 @@ class Database(
         }
     }
 
-    override fun isDbLockedByCurrentThread(): Boolean {
-        return if (database.isOpen) {
+    override val isDbLockedByCurrentThread: Boolean
+        get() = if (database.isOpen) {
             database.isDbLockedByCurrentThread
         } else {
             throw IllegalStateException("You should not be doing this on a closed database")
         }
-    }
+
 
     override fun yieldIfContendedSafely(): Boolean {
         return if (database.isOpen) {
@@ -66,60 +63,64 @@ class Database(
         }
     }
 
-    override fun yieldIfContendedSafely(sleepAfterYieldDelay: Long): Boolean {
+    override fun yieldIfContendedSafely(sleepAfterYieldDelayMillis: Long): Boolean {
         return if (database.isOpen) {
-            database.yieldIfContendedSafely(sleepAfterYieldDelay)
+            database.yieldIfContendedSafely(sleepAfterYieldDelayMillis)
         } else {
             throw IllegalStateException("You should not be doing this on a closed database")
         }
     }
 
-    override fun getVersion(): Int = database.version
+    override var version: Int
+        get() = database.version
+        set(value) {
+            database.version = value
+        }
 
-    override fun setVersion(version: Int) {
-        database.version = version
-    }
-
-    override fun getMaximumSize(): Long = database.maximumSize
+    override var maximumSize: Long
+        get() = database.maximumSize
+        set(numBytes) {
+            database.maximumSize = numBytes
+        }
 
     override fun setMaximumSize(numBytes: Long): Long = database.setMaximumSize(numBytes)
 
-    override fun getPageSize(): Long = database.pageSize
+    override var pageSize: Long
+        get() = database.pageSize
+        set(numBytes) {
+            database.pageSize = numBytes
+        }
 
-    override fun setPageSize(numBytes: Long) {
-        database.pageSize = numBytes
-    }
+    override fun query(query: String): Cursor = query(SimpleSQLiteQuery(query))
 
-    override fun query(sql: String?): Cursor = query(SimpleSQLiteQuery(sql))
+    override fun query(query: String, bindArgs: Array<out Any?>): Cursor = query(SimpleSQLiteQuery(query, bindArgs))
 
-    override fun query(sql: String?, bindArgs: Array<out Any>?): Cursor = query(SimpleSQLiteQuery(sql, bindArgs))
-
-    override fun query(supportQuery: SupportSQLiteQuery?): Cursor = query(supportQuery, null)
+    override fun query(query: SupportSQLiteQuery): Cursor = query(query, null)
 
     override fun query(
-        supportQuery: SupportSQLiteQuery?,
+        query: SupportSQLiteQuery,
         cancellationSignal: CancellationSignal?
     ): Cursor {
 
         val binding = SQLiteBinding()
-        supportQuery?.bindTo(binding)
+        query.bindTo(binding)
 
-        return database.rawQueryWithFactory({ _, masterQuery, editTable, query ->
-            supportQuery?.bindTo(Program(query))
-            SQLiteCursor(masterQuery, editTable, query)
-        }, supportQuery?.sql, binding.getBindings(), null)
+        return database.rawQueryWithFactory({ _, masterQuery, editTable, table ->
+            query.bindTo(Program(table))
+            SQLiteCursor(masterQuery, editTable, table)
+        }, query.sql, binding.getBindings(), null)
     }
 
     override fun insert(
-        table: String?,
+        table: String,
         conflictAlgorithm: Int,
-        values: ContentValues?
+        values: ContentValues
     ): Long = database.insertWithOnConflict(table, null, values, conflictAlgorithm)
 
     override fun delete(
-        table: String?,
+        table: String,
         whereClause: String?,
-        whereArgs: Array<out Any>?
+        whereArgs: Array<out Any?>?
     ): Int {
         val query = ("DELETE FROM " + table
                 + if (TextUtils.isEmpty(whereClause)) "" else " WHERE $whereClause")
@@ -138,15 +139,15 @@ class Database(
     }
 
     override fun update(
-        table: String?,
+        table: String,
         conflictAlgorithm: Int,
-        values: ContentValues?,
+        values: ContentValues,
         whereClause: String?,
-        whereArgs: Array<out Any>?
+        whereArgs: Array<out Any?>?
     ): Int {
 
         // taken from SQLiteDatabase class.
-        require(!(values == null || values.size() == 0)) { "Empty values" }
+        require(values.size() != 0) { "Empty values" }
         val sql = StringBuilder(120)
         sql.append("UPDATE ")
         sql.append(CONFLICT_VALUES[conflictAlgorithm])
@@ -190,33 +191,38 @@ class Database(
         }
     }
 
-    override fun execSQL(sql: String?) = database.execSQL(sql)
+    override fun execSQL(sql: String) = database.execSQL(sql)
 
-    override fun execSQL(sql: String?, bindArgs: Array<out Any>?) = database.execSQL(sql, bindArgs)
+    override fun execSQL(sql: String, bindArgs: Array<out Any?>) = database.execSQL(sql, bindArgs)
 
-    override fun isReadOnly(): Boolean = database.isReadOnly
+    override val isReadOnly: Boolean
+        get() = database.isReadOnly
 
-    override fun isOpen(): Boolean = database.isOpen
+    override val isOpen: Boolean
+        get() = database.isOpen
 
     override fun needUpgrade(newVersion: Int): Boolean = database.needUpgrade(newVersion)
 
-    override fun getPath(): String = database.path
+    override val path: String?
+        get() = database.path
 
-    override fun setLocale(locale: Locale?) = database.setLocale(locale)
+    override fun setLocale(locale: Locale) = database.setLocale(locale)
 
     override fun setMaxSqlCacheSize(cacheSize: Int) = database.setMaxSqlCacheSize(cacheSize)
 
-    override fun setForeignKeyConstraintsEnabled(enable: Boolean) = database.setForeignKeyConstraintsEnabled(enable)
+    override fun setForeignKeyConstraintsEnabled(enabled: Boolean) = database.setForeignKeyConstraintsEnabled(enabled)
 
     override fun enableWriteAheadLogging(): Boolean = database.enableWriteAheadLogging()
 
     override fun disableWriteAheadLogging() = database.disableWriteAheadLogging()
 
-    override fun isWriteAheadLoggingEnabled(): Boolean = database.isWriteAheadLoggingEnabled
+    override val isWriteAheadLoggingEnabled: Boolean
+        get() = database.isWriteAheadLoggingEnabled
 
-    override fun getAttachedDbs(): MutableList<Pair<String, String>> = database.attachedDbs
+    override val attachedDbs: List<Pair<String, String>>? = database.attachedDbs
 
-    override fun isDatabaseIntegrityOk(): Boolean = database.isDatabaseIntegrityOk
+    override val isDatabaseIntegrityOk: Boolean
+        get() = database.isDatabaseIntegrityOk
 
     override fun close() = database.close()
 }
