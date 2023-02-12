@@ -37,11 +37,11 @@ Please check which android room version are you using and select the perfect fit
 
 - Which version use?
 
-| Room              | SpatiaRoom     |
-|-------------------|----------------|
-| 2.3.0             | 0.2.3          |
-| >= 2.4.2 < 2.5.0  | 0.2.4          |
-| >= 2.5.0          | 0.2.5          |
+| Room             | SpatiaRoom |
+| ---------------- | ---------- |
+| 2.3.0            | 0.2.3      |
+| >= 2.4.2 < 2.5.0 | 0.2.4      |
+| >= 2.5.0         | 0.2.5      |
 
 - Android Room >= 2.5.0
 
@@ -52,7 +52,7 @@ dependencies {
 ```
 
 - Android Room >= 2.4.2 < 2.5.0
- 
+
 ```gradle
 dependencies {
         implementation 'com.github.anboralabs:spatia-room:0.2.4'
