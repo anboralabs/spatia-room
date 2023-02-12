@@ -7,11 +7,11 @@ class SQLiteBinding: SupportSQLiteProgram {
 
     private val bindings = SparseArray<Any>()
 
-    override fun bindBlob(index: Int, value: ByteArray?) = bindings.put(index, value)
+    override fun bindBlob(index: Int, value: ByteArray) = bindings.put(index, value)
 
     override fun bindLong(index: Int, value: Long) = bindings.put(index, value)
 
-    override fun bindString(index: Int, value: String?) = bindings.put(index, value)
+    override fun bindString(index: Int, value: String) = bindings.put(index, value)
 
     override fun bindDouble(index: Int, value: Double) = bindings.put(index, value)
 

@@ -20,17 +20,18 @@ class Helper(
         return OpenHelper(callback)
     }
 
-    override fun getDatabaseName(): String = delegate.databaseName
+    override val databaseName: String?
+        get() = delegate.databaseName
 
-    override fun getWritableDatabase(): SupportSQLiteDatabase {
-        try {
-            return delegate.getWritableSupportDatabase() as SupportSQLiteDatabase
+    override val writableDatabase: SupportSQLiteDatabase
+        get() = try {
+            delegate.getWritableSupportDatabase() as SupportSQLiteDatabase
         } catch (e: Exception) {
             throw e
         }
-    }
 
-    override fun getReadableDatabase(): SupportSQLiteDatabase = writableDatabase
+    override val readableDatabase: SupportSQLiteDatabase
+        get() = writableDatabase
 
     override fun close() = delegate.close()
 

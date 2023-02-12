@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper
 import co.anbora.labs.spatia.db.SpatiaHelperFactory
 import java.util.concurrent.Executor
 
-class SpatiaBuilder<T : RoomDatabase?> (
+class SpatiaBuilder<T : RoomDatabase> (
     context: Context,
     klass: Class<T>,
     name: String

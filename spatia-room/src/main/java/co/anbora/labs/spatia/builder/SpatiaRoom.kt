@@ -12,7 +12,7 @@ import java.util.concurrent.Executor
 
 object SpatiaRoom {
 
-    fun <T : RoomDatabase?> databaseBuilder(
+    fun <T : RoomDatabase> databaseBuilder(
         context: Context, klass: Class<T>, name: String
     ): Builder<T> {
         require(name.trim { it <= ' ' }.isNotEmpty()) {
