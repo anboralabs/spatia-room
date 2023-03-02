@@ -38,7 +38,7 @@ Please check which android room version are you using and select the perfect fit
 - Which version use?
 
 | Room             | SpatiaRoom  | LWGeom functions |
-|------------------|-------------|------------------|
+| ---------------- | ----------- | ---------------- |
 | 2.3.0            | 0.2.3       | &#x2612;         |
 | >= 2.4.2 < 2.5.0 | 0.2.4       | &#x2612;         |
 | >= 2.5.0         | 0.2.5       | &#x2612;         |
@@ -51,7 +51,9 @@ dependencies {
         implementation 'com.github.anboralabs:spatia-room:0.2.5'
 }
 ```
+
 to use lwgeom functions
+
 ```gradle
 dependencies {
         implementation 'com.github.anboralabs:spatia-room:0.2.5-alpha'
