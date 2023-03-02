@@ -67,10 +67,10 @@ interface PostsDao {
      * Create a polyline from String and return String
      */
     @Query("""
-        SELECT ASText( 
+        SELECT ASText(
             MakePolygon(
-                GeomFromText('LINESTRING(0 0, 100 0, 100 100, 0 100, 0 0)') 
-            ) 
+                GeomFromText('LINESTRING(0 0, 100 0, 100 100, 0 100, 0 0)')
+            )
         ) as line
     """)
     @SkipQueryVerification
