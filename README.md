@@ -59,7 +59,7 @@ dependencies {
 ```
 
 - Android Room >= 2.4.2 < 2.5.0
- 
+
 ```gradle
 dependencies {
         implementation 'com.github.anboralabs:spatia-room:0.2.4'
