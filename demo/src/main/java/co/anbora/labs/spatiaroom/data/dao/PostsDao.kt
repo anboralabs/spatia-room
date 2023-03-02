@@ -88,6 +88,10 @@ interface PostsDao {
     @SkipQueryVerification
     fun getDistance(): Double
 
+    @Query("SELECT Degrees(azimuth(MakePoint(129.296934, 36.760325, 4326), MakePoint(129.29694, 36.760312, 4326)))")
+    @SkipQueryVerification
+    fun testAzimuth(): Double
+
     /**
      * Deletes all the posts from the [Post.TABLE_NAME] table.
      */

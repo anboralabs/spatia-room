@@ -48,7 +48,7 @@ class FirstFragment : Fragment() {
             val makePoliline = appDatabase.getPostsDao().getMakePolyline()
             val distance = appDatabase.getPostsDao().getDistance()
             val post = appDatabase.getPostsDao().getAllPostsList()
-            println("Posts: $post")
+            val azimuth = appDatabase.getPostsDao().testAzimuth()
 
             withContext(Dispatchers.Main) {
                 spatia_version.text = spatiaVersion
@@ -56,6 +56,7 @@ class FirstFragment : Fragment() {
                 geos_version.text = geosVersion
                 polyline_txt.text = makePoliline
                 distance_txt.text = distance.toString()
+                azimuth_txt.text = azimuth.toString()
             }
         }
     }
