@@ -37,12 +37,12 @@ Please check which android room version are you using and select the perfect fit
 
 - Which version use?
 
-| Room             | SpatiaRoom  | LWGeom functions |
-|------------------|-------------|------------------|
-| 2.3.0            | 0.2.3       | &#x2612;         |
-| >= 2.4.2 < 2.5.0 | 0.2.4       | &#x2612;         |
-| >= 2.5.0         | 0.2.5       | &#x2612;         |
-| >= 2.5.0         | 0.2.5-alpha | &#x2611;         |
+| Room             | SpatiaRoom  | LWGeom functions   |
+|------------------|-------------|--------------------|
+| 2.3.0            | 0.2.3       | :no_entry:         |
+| >= 2.4.2 < 2.5.0 | 0.2.4       | :no_entry:         |
+| >= 2.5.0         | 0.2.5       | :no_entry:         |
+| >= 2.5.0         | 0.2.5-alpha | :white_check_mark: |
 
 - Android Room >= 2.5.0
 
@@ -51,7 +51,7 @@ dependencies {
         implementation 'com.github.anboralabs:spatia-room:0.2.5'
 }
 ```
-to use lwgeom functions
+- Android Room >= 2.5.0 with lwgeom functions
 ```gradle
 dependencies {
         implementation 'com.github.anboralabs:spatia-room:0.2.5-alpha'
