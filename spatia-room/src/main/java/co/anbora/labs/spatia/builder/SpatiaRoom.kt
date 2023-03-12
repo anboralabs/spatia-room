@@ -27,6 +27,16 @@ object SpatiaRoom {
         )
     }
 
+    fun <T : RoomDatabase> inMemoryDatabaseBuilder(
+        context: Context, klass: Class<T>
+    ): Builder<T> {
+        return SpatiaBuilder(
+            context.applicationContext,
+            klass,
+            null
+        )
+    }
+
     /**
      * Builder for SpatiaDatabase.
      *

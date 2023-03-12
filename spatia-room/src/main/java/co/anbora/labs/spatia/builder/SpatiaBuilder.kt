@@ -11,16 +11,20 @@ import java.util.concurrent.Executor
 class SpatiaBuilder<T : RoomDatabase> (
     context: Context,
     klass: Class<T>,
-    name: String
+    name: String?
 ): SpatiaRoom.Builder<T> {
 
     private val templateDb = "spatia_db_template.sqlite"
 
-    private val roomBuilder = Room.databaseBuilder(
-        context.applicationContext,
-        klass,
-        name
-    ).createFromAsset(templateDb)
+    private val roomBuilder = if (name != null) {
+        Room.databaseBuilder(
+            context.applicationContext,
+            klass,
+            name
+        )
+    } else {
+        Room.inMemoryDatabaseBuilder(context.applicationContext, klass)
+    }.createFromAsset(templateDb)
         .openHelperFactory(SpatiaHelperFactory())
 
     override fun createFromAsset(databaseFilePath: String): SpatiaRoom.Builder<T> {
