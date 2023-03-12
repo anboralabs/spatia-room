@@ -8,7 +8,7 @@ import org.spatialite.database.SQLiteOpenHelper
 
 class Helper(
     private val context: Context,
-    private val dbName: String,
+    private val dbName: String?,
     private val callback: SupportSQLiteOpenHelper.Callback
 ): SupportSQLiteOpenHelper {
 
