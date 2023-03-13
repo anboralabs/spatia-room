@@ -1,9 +1,6 @@
 package co.anbora.labs.spatia.db
 
-import co.anbora.labs.spatia.geometry.GeometryConverters
-import co.anbora.labs.spatia.geometry.LineString
-import co.anbora.labs.spatia.geometry.Point
-import co.anbora.labs.spatia.geometry.Polygon
+import co.anbora.labs.spatia.geometry.*
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -40,5 +37,75 @@ class GeometryConvertersTest {
         )))
         val binary = converters.fromPolygon(polygon)
         assertEquals(polygon, converters.toPolygon(binary))
+    }
+
+    @Test
+    fun testMultiPoint() {
+        val multiPoint = MultiPoint(listOf(
+            Point(-122.080699, 37.426734),
+            Point(-122.084801, 37.422131),
+            Point(-122.088006, 37.418401)
+        ))
+        val binary = converters.fromMultiPoint(multiPoint)
+        assertEquals(multiPoint, converters.toMultiPoint(binary))
+    }
+
+    @Test
+    fun testMultiLineString() {
+        val multiLineString = MultiLineString(listOf(
+            LineString(listOf(
+                Point(-122.080699, 37.426734),
+                Point(-122.084801, 37.422131),
+                Point(-122.088006, 37.418401),
+            )),
+            LineString(listOf(
+                Point(-122.084801, 37.422131),
+                Point(-122.088006, 37.418401),
+                Point(-122.080699, 37.426734),
+            ))
+        ))
+        val binary = converters.fromMultiLineString(multiLineString)
+        assertEquals(multiLineString, converters.toMultiLineString(binary))
+    }
+
+    @Test
+    fun testMultiPolygon() {
+        val multiPolygon = MultiPolygon(listOf(
+            Polygon(LineString(listOf(
+                Point(-122.080699, 37.426734),
+                Point(-122.084801, 37.422131),
+                Point(-122.088006, 37.418401),
+                Point(-122.080699, 37.426734),
+            ))),
+            Polygon(LineString(listOf(
+                Point(-122.080699, 37.426734),
+                Point(-122.088006, 37.418401),
+                Point(-122.084801, 37.422131),
+                Point(-122.080699, 37.426734),
+            )))
+        ))
+        val binary = converters.fromMultiPolygon(multiPolygon)
+        assertEquals(multiPolygon, converters.toMultiPolygon(binary))
+    }
+
+    @Test
+    fun testGeometryCollection() {
+        val geometryCollection = GeometryCollection(listOf(
+            Point(-122.084801, 37.422131),
+            LineString(listOf(
+                Point(-122.080699, 37.426734),
+                Point(-122.084801, 37.422131),
+                Point(-122.088006, 37.418401),
+                Point(-122.080699, 37.426734),
+            )),
+            Polygon(LineString(listOf(
+                Point(-122.080699, 37.426734),
+                Point(-122.088006, 37.418401),
+                Point(-122.084801, 37.422131),
+                Point(-122.080699, 37.426734),
+            )))
+        ))
+        val binary = converters.fromGeometryCollection(geometryCollection)
+        assertEquals(geometryCollection, converters.toGeometryCollection(binary))
     }
 }

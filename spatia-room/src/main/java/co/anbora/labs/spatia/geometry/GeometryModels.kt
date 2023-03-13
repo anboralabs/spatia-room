@@ -3,7 +3,7 @@ package co.anbora.labs.spatia.geometry
 /**
  * Represents a geometry as stored in a Spatialite database.
  */
-abstract class Geometry {
+sealed class Geometry {
     /**
      * The Spatial Reference Identifier (SRID) for this Geometry.
      *
@@ -92,5 +92,23 @@ data class Polygon(val rings: List<LineString>): Geometry() {
 
     override val mbr: Mbr by lazy {
         exteriorRing.mbr
+    }
+}
+
+sealed class GeoCollection<T: Geometry>(val items: List<T>): Geometry() {
+    override val srid = items.map { it.srid }.distinct().single()
+    override val mbr: Mbr by lazy {
+        Mbr(items.minOf { it.mbr.minX }, items.minOf { it.mbr.minY }, items.maxOf { it.mbr.maxX }, items.maxOf { it.mbr.maxY }, srid)
+    }
+}
+
+data class MultiPoint(val points: List<Point>): GeoCollection<Point>(points)
+data class MultiLineString(val lineStrings: List<LineString>): GeoCollection<LineString>(lineStrings)
+data class MultiPolygon(val polygons: List<Polygon>): GeoCollection<Polygon>(polygons)
+data class GeometryCollection(val geometries: List<Geometry>): GeoCollection<Geometry>(geometries) {
+    init {
+        if (geometries.any { it is GeoCollection<*> }) {
+            throw IllegalArgumentException("nested geometry collections are not allowed")
+        }
     }
 }
