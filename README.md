@@ -37,11 +37,11 @@ Please check which android room version are you using and select the perfect fit
 
 - Which version use?
 
-| Room             | SpatiaRoom  | LWGeom functions   |
-|------------------|-------------|--------------------|
-| 2.3.0            | 0.2.3       | :no_entry:         |
-| >= 2.4.2 < 2.5.0 | 0.2.4       | :no_entry:         |
-| >= 2.5.0         | 0.2.6       | :white_check_mark: |
+| Room             | SpatiaRoom | LWGeom functions   |
+| ---------------- | ---------- | ------------------ |
+| 2.3.0            | 0.2.3      | :no_entry:         |
+| >= 2.4.2 < 2.5.0 | 0.2.4      | :no_entry:         |
+| >= 2.5.0         | 0.2.6      | :white_check_mark: |
 
 - Android Room >= 2.5.0
 
