@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import co.anbora.labs.spatia.db.SpatiaHelperFactory
 import java.util.concurrent.Executor
@@ -11,17 +12,24 @@ import java.util.concurrent.Executor
 class SpatiaBuilder<T : RoomDatabase> (
     context: Context,
     klass: Class<T>,
-    name: String
+    name: String?
 ): SpatiaRoom.Builder<T> {
 
     private val templateDb = "spatia_db_template.sqlite"
 
-    private val roomBuilder = Room.databaseBuilder(
-        context.applicationContext,
-        klass,
-        name
-    ).createFromAsset(templateDb)
-        .openHelperFactory(SpatiaHelperFactory())
+    private val roomBuilder = if (name != null) {
+        Room.databaseBuilder(
+            context.applicationContext,
+            klass,
+            name
+        )
+    } else {
+        Room.inMemoryDatabaseBuilder(context.applicationContext, klass)
+    }.addCallback(object : RoomDatabase.Callback() {
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            db.query("SELECT InitSpatialMetaData();").moveToNext()
+        }
+    }).openHelperFactory(SpatiaHelperFactory())
 
     override fun createFromAsset(databaseFilePath: String): SpatiaRoom.Builder<T> {
         roomBuilder.createFromAsset(databaseFilePath)
