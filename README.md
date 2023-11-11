@@ -41,13 +41,13 @@ Please check which android room version are you using and select the perfect fit
 |------------------|------------|--------------------|
 | 2.3.0            | 0.2.3      | :no_entry:         |
 | >= 2.4.2 < 2.5.0 | 0.2.4      | :no_entry:         |
-| >= 2.5.0         | 0.2.7      | :white_check_mark: |
+| >= 2.5.0         | 0.2.8      | :white_check_mark: |
 
 - Android Room >= 2.5.0
 
 ```gradle
 dependencies {
-        implementation 'com.github.anboralabs:spatia-room:0.2.7'
+        implementation 'com.github.anboralabs:spatia-room:0.2.8'
 }
 ```
 
