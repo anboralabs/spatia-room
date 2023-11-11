@@ -2,13 +2,28 @@ package co.anbora.labs.spatia.builder
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import androidx.annotation.IntRange
+import androidx.room.AutoMigration
+import androidx.room.Database
+import androidx.room.ExperimentalRoomApi
+import androidx.room.MultiInstanceInvalidationService
+import androidx.room.ProvidedTypeConverter
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.RoomDatabase.Builder
+import androidx.room.RoomDatabase.Callback
 import androidx.room.RoomDatabase.JournalMode
+import androidx.room.RoomDatabase.QueryCallback
+import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
+import java.io.File
+import java.io.InputStream
+import java.util.concurrent.Callable
 import java.util.concurrent.Executor
+import java.util.concurrent.TimeUnit
 
 object SpatiaRoom {
 
@@ -68,6 +83,146 @@ object SpatiaRoom {
         fun createFromAsset(databaseFilePath: String): Builder<T>
 
         /**
+         * Configures Room to create and open the database using a pre-packaged database located in
+         * the application 'assets/' folder.
+         *
+         * Room does not open the pre-packaged database, instead it copies it into the internal
+         * app database folder and then opens it. The pre-packaged database file must be located in
+         * the "assets/" folder of your application. For example, the path for a file located in
+         * "assets/databases/products.db" would be "databases/products.db".
+         *
+         * The pre-packaged database schema will be validated. It might be best to create your
+         * pre-packaged database schema utilizing the exported schema files generated when
+         * [Database.exportSchema] is enabled.
+         *
+         * This method is not supported for an in memory database [Builder].
+         *
+         * @param databaseFilePath The file path within the 'assets/' directory of where the
+         * database file is located.
+         * @param callback The pre-packaged callback.
+         *
+         * @return This builder instance.
+         */
+        @SuppressLint("BuilderSetStyle") // To keep naming consistency.
+        fun createFromAsset(
+            databaseFilePath: String,
+            callback: RoomDatabase.PrepackagedDatabaseCallback
+        ): Builder<T>
+
+        /**
+         * Configures Room to create and open the database using a pre-packaged database file.
+         *
+         * Room does not open the pre-packaged database, instead it copies it into the internal
+         * app database folder and then opens it. The given file must be accessible and the right
+         * permissions must be granted for Room to copy the file.
+         *
+         * The pre-packaged database schema will be validated. It might be best to create your
+         * pre-packaged database schema utilizing the exported schema files generated when
+         * [Database.exportSchema] is enabled.
+         *
+         * The [Callback.onOpen] method can be used as an indicator
+         * that the pre-packaged database was successfully opened by Room and can be cleaned up.
+         *
+         * This method is not supported for an in memory database [Builder].
+         *
+         * @param databaseFile The database file.
+         *
+         * @return This builder instance.
+         */
+        fun createFromFile(databaseFile: File): Builder<T>
+
+        /**
+         * Configures Room to create and open the database using a pre-packaged database file.
+         *
+         * Room does not open the pre-packaged database, instead it copies it into the internal
+         * app database folder and then opens it. The given file must be accessible and the right
+         * permissions must be granted for Room to copy the file.
+         *
+         * The pre-packaged database schema will be validated. It might be best to create your
+         * pre-packaged database schema utilizing the exported schema files generated when
+         * [Database.exportSchema] is enabled.
+         *
+         * The [Callback.onOpen] method can be used as an indicator
+         * that the pre-packaged database was successfully opened by Room and can be cleaned up.
+         *
+         * This method is not supported for an in memory database [Builder].
+         *
+         * @param databaseFile The database file.
+         * @param callback The pre-packaged callback.
+         *
+         * @return This builder instance.
+         */
+        @SuppressLint("BuilderSetStyle", "StreamFiles") // To keep naming consistency.
+        fun createFromFile(
+            databaseFile: File,
+            callback: RoomDatabase.PrepackagedDatabaseCallback
+        ): Builder<T>
+
+        /**
+         * Configures Room to create and open the database using a pre-packaged database via an
+         * [InputStream].
+         *
+         * This is useful for processing compressed database files. Room does not open the
+         * pre-packaged database, instead it copies it into the internal app database folder, and
+         * then open it. The [InputStream] will be closed once Room is done consuming it.
+         *
+         * The pre-packaged database schema will be validated. It might be best to create your
+         * pre-packaged database schema utilizing the exported schema files generated when
+         * [Database.exportSchema] is enabled.
+         *
+         * The [Callback.onOpen] method can be used as an indicator
+         * that the pre-packaged database was successfully opened by Room and can be cleaned up.
+         *
+         * This method is not supported for an in memory database [Builder].
+         *
+         * @param inputStreamCallable A callable that returns an InputStream from which to copy
+         * the database. The callable will be invoked in a thread from
+         * the Executor set via [setQueryExecutor]. The
+         * callable is only invoked if Room needs to create and open the
+         * database from the pre-package database, usually the first time
+         * it is created or during a destructive migration.
+         *
+         * @return This builder instance.
+         */
+        @SuppressLint("BuilderSetStyle") // To keep naming consistency.
+        fun createFromInputStream(
+            inputStreamCallable: Callable<InputStream>
+        ): Builder<T>
+
+        /**
+         * Configures Room to create and open the database using a pre-packaged database via an
+         * [InputStream].
+         *
+         * This is useful for processing compressed database files. Room does not open the
+         * pre-packaged database, instead it copies it into the internal app database folder, and
+         * then open it. The [InputStream] will be closed once Room is done consuming it.
+         *
+         * The pre-packaged database schema will be validated. It might be best to create your
+         * pre-packaged database schema utilizing the exported schema files generated when
+         * [Database.exportSchema] is enabled.
+         *
+         * The [Callback.onOpen] method can be used as an indicator
+         * that the pre-packaged database was successfully opened by Room and can be cleaned up.
+         *
+         * This method is not supported for an in memory database [Builder].
+         *
+         * @param inputStreamCallable A callable that returns an InputStream from which to copy
+         * the database. The callable will be invoked in a thread from
+         * the Executor set via [setQueryExecutor]. The
+         * callable is only invoked if Room needs to create and open the
+         * database from the pre-package database, usually the first time
+         * it is created or during a destructive migration.
+         * @param callback The pre-packaged callback.
+         *
+         * @return This builder instance.
+         */
+        @SuppressLint("BuilderSetStyle", "LambdaLast") // To keep naming consistency.
+        fun createFromInputStream(
+            inputStreamCallable: Callable<InputStream>,
+            callback: RoomDatabase.PrepackagedDatabaseCallback
+        ): Builder<T>
+
+        /**
          * Sets the database factory. If not set, it defaults to
          * [FrameworkSQLiteOpenHelperFactory].
          *
@@ -99,6 +254,16 @@ object SpatiaRoom {
          * @return This [Builder] instance.
          */
         fun addMigrations(vararg migrations: Migration): Builder<T>
+
+        /**
+         * Adds an auto migration spec to the builder.
+         *
+         * @param autoMigrationSpec The auto migration object that is annotated with
+         * [AutoMigrationSpec] and is declared in an [AutoMigration] annotation.
+         * @return This builder instance.
+         */
+        @Suppress("MissingGetterMatchingBuilder")
+        fun addAutoMigrationSpec(autoMigrationSpec: AutoMigrationSpec): Builder<T>
 
         /**
          * Disables the main thread query check for Room.
@@ -277,6 +442,34 @@ object SpatiaRoom {
          * @return This [Builder] instance.
          */
         fun addCallback(callback: RoomDatabase.Callback): Builder<T>
+
+        /**
+         * Sets a [QueryCallback] to be invoked when queries are executed.
+         *
+         * The callback is invoked whenever a query is executed, note that adding this callback
+         * has a small cost and should be avoided in production builds unless needed.
+         *
+         * A use case for providing a callback is to allow logging executed queries. When the
+         * callback implementation logs then it is recommended to use an immediate executor.
+         *
+         * @param queryCallback The query callback.
+         * @param executor The executor on which the query callback will be invoked.
+         * @return This builder instance.
+         */
+        @Suppress("MissingGetterMatchingBuilder")
+        fun setQueryCallback(
+            queryCallback: QueryCallback,
+            executor: Executor
+        ): Builder<T>
+
+        /**
+         * Adds a type converter instance to this database.
+         *
+         * @param typeConverter The converter. It must be an instance of a class annotated with
+         * [ProvidedTypeConverter] otherwise Room will throw an exception.
+         * @return This builder instance.
+         */
+        fun addTypeConverter(typeConverter: Any): Builder<T>
 
         /**
          * Creates the databases and initializes it.
