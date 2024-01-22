@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
 
 android {
@@ -46,8 +45,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.core:core-ktx:1.9.0'
-    api "androidx.room:room-runtime:2.5.1"
-    kapt "androidx.room:room-compiler:2.5.1"
+    api "androidx.room:room-runtime:2.6.1"
+    kapt "androidx.room:room-compiler:2.6.1"
     implementation 'com.github.dalgarins:android-spatialite:2.1.1-alpha'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -61,7 +60,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.anboralabs'
                 artifactId = 'spatia-room'
-                version = '0.2.8'
+                version = '0.2.9'
             }
         }
     }
