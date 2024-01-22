@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import co.anbora.labs.spatia.geometry.Point
 import co.anbora.labs.spatiaroom.data.AppDatabase
 import co.anbora.labs.spatiaroom.data.model.Post
-import kotlinx.android.synthetic.main.fragment_first.*
 import kotlinx.coroutines.*
 
 /**
@@ -34,6 +34,13 @@ class FirstFragment : Fragment() {
 
         appDatabase = AppDatabase.getInstance(requireContext())
 
+        val spatia_version = getView()?.findViewById<TextView>(R.id.spatia_version)
+        val proj4_version = getView()?.findViewById<TextView>(R.id.proj4_version)
+        val geos_version = getView()?.findViewById<TextView>(R.id.geos_version)
+        val polyline_txt = getView()?.findViewById<TextView>(R.id.polyline_txt)
+        val distance_txt = getView()?.findViewById<TextView>(R.id.distance_txt)
+        val azimuth_txt = getView()?.findViewById<TextView>(R.id.azimuth_txt)
+
         uiScope.launch(Dispatchers.IO) {
             val post1 = Post(1, "prueba", "darwin", "spatia", "test.img", Point(0.0, 0.0))
             val post2 = Post(2, "prueba2", null, "spatia2", "test2.img", Point(-122.084801, 37.422131))
@@ -51,12 +58,12 @@ class FirstFragment : Fragment() {
             val azimuth = appDatabase.getPostsDao().testAzimuth()
 
             withContext(Dispatchers.Main) {
-                spatia_version.text = spatiaVersion
-                proj4_version.text = proj4Version
-                geos_version.text = geosVersion
-                polyline_txt.text = makePoliline
-                distance_txt.text = distance.toString()
-                azimuth_txt.text = azimuth.toString()
+                spatia_version?.text = spatiaVersion
+                proj4_version?.text = proj4Version
+                geos_version?.text = geosVersion
+                polyline_txt?.text = makePoliline
+                distance_txt?.text = distance.toString()
+                azimuth_txt?.text = azimuth.toString()
             }
         }
     }
