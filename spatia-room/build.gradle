@@ -1,17 +1,19 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'maven-publish'
+plugins {
+    alias(libs.plugins.android.library)
+    id 'org.jetbrains.kotlin.kapt'
+    id 'kotlin-android'
+    id 'maven-publish'
+}
 
 android {
-    compileSdkVersion 34
+    namespace 'co.anbora.labs.spatia.db'
+    compileSdk 34
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdk 21
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -33,34 +35,38 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-        freeCompilerArgs = ["-Xjvm-default=all"]
-    }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.core:core-ktx:1.9.0'
-    api "androidx.room:room-runtime:2.6.1"
-    kapt "androidx.room:room-compiler:2.6.1"
-    implementation 'com.github.dalgarins:android-spatialite:2.1.1-alpha'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation libs.appcompat
+    implementation libs.material
+
+    api libs.room.runtime
+    kapt libs.room.compiler
+    implementation libs.android.spatialite
+
+    implementation libs.core.ktx
+    implementation libs.kotlin.stdlib
+
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.anboralabs'
+            artifactId = 'spatia-room'
+            version = '0.3.0'
+
+            afterEvaluate {
                 from components.release
-                groupId = 'com.github.anboralabs'
-                artifactId = 'spatia-room'
-                version = '0.2.9'
             }
         }
     }
