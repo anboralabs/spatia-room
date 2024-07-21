@@ -5,8 +5,10 @@ plugins {
     id 'maven-publish'
 }
 
+group = 'co.anbora.labs.spatia'
+
 android {
-    namespace 'co.anbora.labs.spatia.db'
+    namespace 'co.anbora.labs.spatia'
     compileSdk 34
 
     defaultConfig {
