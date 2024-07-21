@@ -35,8 +35,8 @@ while [ -h "$PRG" ] ; do
         PRG=$(dirname "$PRG")"/$link"
     fi
 done
-SAVED="$(pwd)"
-cd "$(dirname \"$PRG\")/" >/dev/null || exit
+SAVED="$PWD"
+cd "$(dirname \""$PRG"\")/" >/dev/null || exit
 APP_HOME="$(pwd -P)"
 cd "$SAVED" >/dev/null || exit
 
@@ -122,7 +122,7 @@ if [ "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ] ; then
 fi
 
 # For Darwin, add options to specify how the application appears in the dock
-if $darwin; then
+if "$darwin"; then
     GRADLE_OPTS="$GRADLE_OPTS \"-Xdock:name=$APP_NAME\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\""
 fi
 
@@ -136,7 +136,7 @@ if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
     # We build the pattern for arguments to be converted via cygpath
     ROOTDIRSRAW=$(find -L / -maxdepth 1 -mindepth 1 -type d 2>/dev/null)
     SEP=""
-    for dir in $ROOTDIRSRAW ; do
+    for dir in "$ROOTDIRSRAW" ; do
         ROOTDIRS="$ROOTDIRS$SEP$dir"
         SEP="|"
     done
@@ -152,9 +152,9 @@ if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
         CHECK2=$(echo "$arg"|egrep -c "^-")                                 ### Determine if an option
 
         if [ "$CHECK" -ne 0 ] && [ "$CHECK2" -eq 0 ] ; then                    ### Added a condition
-            eval $(echo args"$i")=$(cygpath --path --ignore --mixed "$arg")
+            eval "$(echo args"$i")=$(cygpath --path --ignore --mixed "$arg")"
         else
-            eval $(echo args"$i")="\"$arg\""
+            eval "$(echo args"$i")=\"$arg\""
         fi
         i=$(expr "$i" + 1)
     done
