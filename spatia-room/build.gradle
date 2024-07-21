@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.library)
     id 'org.jetbrains.kotlin.kapt'
     id 'kotlin-android'
-    id 'maven-publish'
 }
 
 group = 'co.anbora.labs.spatia'
