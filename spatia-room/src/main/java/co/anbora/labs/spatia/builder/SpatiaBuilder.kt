@@ -35,6 +35,10 @@ class SpatiaBuilder<T : RoomDatabase> (
         }
     }).openHelperFactory(SpatiaHelperFactory())
 
+    @Deprecated(
+        "This API is experimental. It may be changed in the future without notice.",
+        level = DeprecationLevel.WARNING
+    )
     override fun createFromAsset(databaseFilePath: String): SpatiaRoom.Builder<T> {
         roomBuilder.createFromAsset(databaseFilePath)
         return this

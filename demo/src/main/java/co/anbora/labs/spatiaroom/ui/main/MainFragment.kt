@@ -1,32 +1,41 @@
-package co.anbora.labs.spatiaroom
+package co.anbora.labs.spatiaroom.ui.main
 
+import androidx.fragment.app.viewModels
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import co.anbora.labs.spatia.geometry.Point
+
+import co.anbora.labs.spatiaroom.R
 import co.anbora.labs.spatiaroom.data.AppDatabase
 import co.anbora.labs.spatiaroom.data.model.Post
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
-class FirstFragment : Fragment() {
+class MainFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = MainFragment()
+    }
 
     private lateinit var appDatabase: AppDatabase
 
     val job = Job()
     val uiScope = CoroutineScope(Dispatchers.Main + job)
 
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,12 +43,12 @@ class FirstFragment : Fragment() {
 
         appDatabase = AppDatabase.getInstance(requireContext())
 
-        val spatia_version = getView()?.findViewById<TextView>(R.id.spatia_version)
-        val proj4_version = getView()?.findViewById<TextView>(R.id.proj4_version)
-        val geos_version = getView()?.findViewById<TextView>(R.id.geos_version)
-        val polyline_txt = getView()?.findViewById<TextView>(R.id.polyline_txt)
-        val distance_txt = getView()?.findViewById<TextView>(R.id.distance_txt)
-        val azimuth_txt = getView()?.findViewById<TextView>(R.id.azimuth_txt)
+        val spatia_version = view?.findViewById<TextView>(R.id.spatia_version)
+        val proj4_version = view?.findViewById<TextView>(R.id.proj4_version)
+        val geos_version = view?.findViewById<TextView>(R.id.geos_version)
+        val polyline_txt = view?.findViewById<TextView>(R.id.polyline_txt)
+        val distance_txt = view?.findViewById<TextView>(R.id.distance_txt)
+        val azimuth_txt = view?.findViewById<TextView>(R.id.azimuth_txt)
 
         uiScope.launch(Dispatchers.IO) {
             val post1 = Post(1, "prueba", "darwin", "spatia", "test.img", Point(0.0, 0.0))
