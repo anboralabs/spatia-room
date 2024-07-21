@@ -67,7 +67,7 @@ dependencies {
 }
 ```
 
-### Compatibility Mapbox SDK  (Important)
+### Compatibility Mapbox SDK (Important)
 
 Mapbox sdk requirements is ndk 23 as min, add following line to your gradle.
 
@@ -76,7 +76,6 @@ dependencies {
         implementation 'com.github.dalgarins:android-spatialite:2.1.2-ndk23-alpha'
 }
 ```
-
 
 ### Creating the database
 
