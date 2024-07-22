@@ -160,6 +160,14 @@ interface PostsDao {
 }
 ```
 
+## Proguard configuration
+
+Add this line to your proguard rules file.
+
+```properties
+-keep class org.spatialite.database.** { *; }
+```
+
 ## Example Code
 
 There is a very simple and useless example in the `demo` module.
