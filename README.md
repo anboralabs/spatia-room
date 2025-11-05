@@ -37,13 +37,22 @@ Please check which android room version are you using and select the perfect fit
 
 - Which version use?
 
-| Room             | SpatiaRoom | LWGeom functions   |
-| ---------------- | ---------- | ------------------ |
-| 2.3.0            | 0.2.3      | :no_entry:         |
-| >= 2.4.2 < 2.5.0 | 0.2.4      | :no_entry:         |
-| >= 2.5.0         | 0.3.0      | :white_check_mark: |
+| Room             | SpatiaRoom | LWGeom functions   | 16Kb Page Support  | Min Sdk |
+|------------------|------------| ------------------ |--------------------|---------|
+| 2.3.0            | 0.2.3      | :no_entry:         | :no_entry:         | 21      |
+| >= 2.4.2 < 2.5.0 | 0.2.4      | :no_entry:         | :no_entry:         | 21      |
+| >= 2.5.0 < 2.6.1 | 0.3.0      | :white_check_mark: | :no_entry:         | 21      |
+| >= 2.6.1         | 1.0.0      | :white_check_mark: | :white_check_mark: | 23      |
 
-- Android Room >= 2.5.0
+- Android Room >= 2.6.1
+
+```gradle
+dependencies {
+        implementation 'com.github.anboralabs:spatia-room:1.0.0'
+}
+```
+
+- Android Room >= 2.5.0 < 2.6.1
 
 ```gradle
 dependencies {
