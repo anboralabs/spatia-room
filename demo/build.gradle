@@ -1,17 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
-    id 'org.jetbrains.kotlin.kapt'
+    id 'com.google.devtools.ksp'
     id 'kotlin-android'
 }
 
 android {
     namespace 'co.anbora.labs.spatiaroom'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "co.anbora.labs.spatiaroom"
-        minSdk 21
-        targetSdk 34
+        minSdk 23
+        // targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -44,9 +44,9 @@ dependencies {
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.fragment.ktx
 
-    implementation "androidx.room:room-ktx:2.6.1"
-    api "androidx.room:room-runtime:2.6.1"
-    kapt "androidx.room:room-compiler:2.6.1"
+    implementation libs.room.ktx
+    api libs.room.runtime
+    ksp libs.room.compiler
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
     implementation project(':spatia-room')
 
