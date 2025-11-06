@@ -6,6 +6,7 @@ plugins {
 }
 
 group = 'co.anbora.labs.spatia'
+version = '1.0.1'
 
 android {
     namespace 'co.anbora.labs.spatia'
@@ -65,7 +66,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.github.anboralabs'
             artifactId = 'spatia-room'
-            version = '1.0.0'
+            version = '1.0.1'
 
             afterEvaluate {
                 from components.release
