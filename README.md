@@ -185,6 +185,7 @@ Add this line to your proguard rules file.
 
 ```properties
 -keep class org.spatialite.database.** { *; }
+-keep class org.spatialite.** { *; }
 ```
 
 ## Example Code
