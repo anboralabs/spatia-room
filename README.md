@@ -33,22 +33,30 @@ allprojects {
 
 - Add dependency
 
+> [!IMPORTANT]
+> Starting with SpatiaRoom **1.0.2**, the Spatialite native dependency changed from
+> `com.github.dalgarins:android-spatialite` (JitPack) to `io.github.dalgarins:android-spatialite` (Maven Central).
+>
+> - Make sure `mavenCentral()` is declared in your repositories.
+> - If your project declares `com.github.dalgarins:android-spatialite` explicitly, replace it with
+>   `io.github.dalgarins:android-spatialite` (or remove it) to avoid duplicate class errors.
+
 Please check which android room version are you using and select the perfect fit for you with SpatiaRoom.
 
 - Which version use?
 
 | Room             | SpatiaRoom | LWGeom functions   | 16Kb Page Support  | Min Sdk |
 |------------------|------------| ------------------ |--------------------|---------|
-| 2.3.0            | 0.2.3      | :no_entry:         | :no_entry:         | 21      |
-| >= 2.4.2 < 2.5.0 | 0.2.4      | :no_entry:         | :no_entry:         | 21      |
+| >= 2.6.1         | 1.0.2      | :white_check_mark: | :white_check_mark: | 23      |
 | >= 2.5.0 < 2.6.1 | 0.3.0      | :white_check_mark: | :no_entry:         | 21      |
-| >= 2.6.1         | 1.0.1      | :white_check_mark: | :white_check_mark: | 23      |
+| >= 2.4.2 < 2.5.0 | 0.2.4      | :no_entry:         | :no_entry:         | 21      |
+| 2.3.0            | 0.2.3      | :no_entry:         | :no_entry:         | 21      |
 
 - Android Room >= 2.6.1
 
 ```gradle
 dependencies {
-        implementation 'com.github.anboralabs:spatia-room:1.0.1'
+        implementation 'com.github.anboralabs:spatia-room:1.0.2'
 }
 ```
 

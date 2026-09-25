@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'co.anbora.labs.spatiaroom'
-    compileSdk 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId "co.anbora.labs.spatiaroom"
