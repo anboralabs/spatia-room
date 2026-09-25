@@ -33,6 +33,14 @@ allprojects {
 
 - Add dependency
 
+> [!IMPORTANT]
+> Starting with SpatiaRoom **1.0.2**, the Spatialite native dependency changed from
+> `com.github.dalgarins:android-spatialite` (JitPack) to `io.github.dalgarins:android-spatialite` (Maven Central).
+>
+> - Make sure `mavenCentral()` is declared in your repositories.
+> - If your project declares `com.github.dalgarins:android-spatialite` explicitly, replace it with
+>   `io.github.dalgarins:android-spatialite` (or remove it) to avoid duplicate class errors.
+
 Please check which android room version are you using and select the perfect fit for you with SpatiaRoom.
 
 - Which version use?
